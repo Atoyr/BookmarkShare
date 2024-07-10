@@ -14,7 +14,7 @@ import {
 } from "~/components/ui/table"
 import { Badge } from "~/components/ui/badge"
 
-import { getBookmarks } from "~/services/getBookmarks";
+import { getBookmarks } from "~/services/getBookmarks.server";
 
 export const meta: MetaFunction = () => {
   return [

@@ -17,6 +17,8 @@ export async function getBookmarks(): Promise<bookmark[]> {
     favalit: false, 
   }, 
   ] as bookmark[];
-  await new Promise(resolve => setTimeout(() => resolve, 2000));
+  console.log("get bookmarks")
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  console.log("complete bookmarks")
   return bookmarks;
 }
