@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "~/.server/services/auth";
 
 import { LoginForm } from "~/components";
 
