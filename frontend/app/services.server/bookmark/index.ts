@@ -1,1 +1,2 @@
-export * from './getBookmarks'
+export * from './bookmark';
+export * from './getBookmarks';
