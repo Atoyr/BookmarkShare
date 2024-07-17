@@ -1,5 +1,5 @@
 import { Authenticator } from "remix-auth";
-import { sessionStorage } from "~/services.server/session";
+import { sessionStorage } from "~/services.server/auth/session";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
