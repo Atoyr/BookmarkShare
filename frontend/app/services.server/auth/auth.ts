@@ -20,14 +20,14 @@ const formStrategy = new FormStrategy(async ({ form }) => {
   // TODO GET USER
   //const user = await prisma.user.findUnique({ where: { email: String(email) } })
 
-  if (!user) {
+  if (!email) {
     throw new AuthorizationError()
   }
 
   // TODO PASSWORD MATCH
   //const passwordsMatch = await bcrypt.compare(String(password), user.password)
 
-  if (!passwordsMatch) {
+  if (!password) {
     throw new AuthorizationError()
   }
 

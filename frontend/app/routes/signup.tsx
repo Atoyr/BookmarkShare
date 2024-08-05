@@ -1,16 +1,14 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
-
-import { useForm, getFormProps, getInputProps } from "@conform-to/react";
-import { parseWithZod } from '@conform-to/zod';
-import { z } from 'zod';
+import { redirect } from "@remix-run/react";
 
 import { supabase } from "~/lib/supabase";
 
 import { SignUpForm } from "~/features/SignUp";
 
 import { signUpWithEmailSchema } from "~/schemas";
+
+import { commitSession, getSession } from "~/services.server/auth/session";
 
 export const meta: MetaFunction = () => {
   return [
@@ -52,10 +50,15 @@ export async function action({
       message: "error!",
       submission: error
     });
-
   }
 
-  return data;
+  const session = await getSession(request.headers.get("Cookie"));
+  session.set("access_token", data!.session!.access_token);
+  return redirect("/dashboard", {
+    headers: {
+      "Set-Cookie": await commitSession(session),
+    },
+  });
 }
 
 

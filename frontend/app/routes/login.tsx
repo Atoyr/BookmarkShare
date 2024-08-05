@@ -25,7 +25,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function Dashboard() {
+export default function Login() {
   return (
     <div className="font-sans p-4">
       <Card className="mx-auto max-w-sm">
