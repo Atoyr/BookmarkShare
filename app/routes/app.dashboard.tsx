@@ -9,8 +9,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function dashboard() {
-
   return (
-    <div>index</div>
+    <div>hogehoge</div>
   );
 }
