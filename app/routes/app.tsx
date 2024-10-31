@@ -88,7 +88,7 @@ const data = {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -114,7 +114,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </BreadcrumbList>
               </Breadcrumb>
             </header>
-
+            {/* TODO: メインコンテンツ */}
             {children}
             <div className="flex flex-1 flex-col gap-4 p-4">
               <div className="grid auto-rows-min gap-4 md:grid-cols-5">
@@ -136,8 +136,8 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="h-16 border-b border-sidebar-border">
         <NavUser user={data.user} />
       </SidebarHeader>
+      {/* TODO: メニューの修正 */}
       <SidebarContent>
-        <DatePicker />
         <SidebarSeparator className="mx-0" />
         <Calendars calendars={data.calendars} />
       </SidebarContent>
