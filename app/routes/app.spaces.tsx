@@ -8,9 +8,11 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function index() {
+export default function dashboard() {
+  console.log("spaces");
 
   return (
-    <div>index</div>
+    <div>spaces</div>
   );
 }
+

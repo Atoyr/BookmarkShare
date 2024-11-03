@@ -1,5 +1,6 @@
 "use client"
 import type { MetaFunction } from "@remix-run/node";
+import { useParams } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -8,9 +9,13 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function index() {
+export default function dashboard() {
+  const params = useParams();
+  const spaceId = params["space_id"];
+  console.log(params);
 
   return (
-    <div>index</div>
+    <div>param spaces/{spaceId}</div>
   );
 }
+

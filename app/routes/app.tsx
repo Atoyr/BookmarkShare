@@ -1,8 +1,13 @@
+"use client"
 import {
   Meta,
   Links,
- Outlet,
+  Outlet,
+  useLoaderData,
+  useLocation,
 } from "@remix-run/react";
+
+import { redirect, type LoaderFunction } from "@remix-run/node";
 
 import * as React from "react"
 import {
@@ -63,74 +68,73 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar"
 
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  calendars: [
-    {
-      name: "My Calendars",
-      items: ["Personal", "Work", "Family"],
-    },
-    {
-      name: "Favorites",
-      items: ["Holidays", "Birthdays"],
-    },
-    {
-      name: "Other",
-      items: ["Travel", "Reminders", "Deadlines"],
-    },
-  ],
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  data : any, 
 }
 
+export let loader: LoaderFunction = async ({request}) => {
+  const url = new URL(request.url);
+  if (url.pathname === "/app") {
+    return redirect("/app/dashboard");
+  }
+  const data = {
+    user: {
+      name: "shadcn loader",
+      email: "m@example.com",
+    },
+    calendars: [
+      {
+        name: "My Calendars",
+        items: ["Personal", "Work", "Family"],
+      },
+      {
+        name: "Favorites",
+        items: ["Holidays", "Birthdays"],
+      },
+      {
+        name: "Other",
+        items: ["Travel", "Reminders", "Deadlines"],
+      },
+    ],
+  }
+  return {data};
+};
+
+// This is sample data.
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { data } = useLoaderData<{ data: any }>();
+
   return (
-    <html lang="ja">
-      <head>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1"
-        />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {/* children will be the root Component, ErrorBoundary, or HydrateFallback */}
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarInset>
-            <header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>October 2024</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </header>
-            {/* TODO: メインコンテンツ */}
-            {children}
-            <div className="flex flex-1 flex-col gap-4 p-4">
-              <div className="grid auto-rows-min gap-4 md:grid-cols-5">
-                {Array.from({ length: 20 }).map((_, i) => (
-                  <div key={i} className="aspect-square rounded-xl bg-muted/50" />
-                ))}
-              </div>
-            </div>
-          </SidebarInset>
-        </SidebarProvider>
-      </body>
-    </html>
+    <SidebarProvider>
+      <AppSidebar data={data}/>
+      <SidebarInset>
+        <header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage>October 2024</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+        {/* TODO: メインコンテンツ */}
+        {children}
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-5">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div key={i} className="aspect-square rounded-xl bg-muted/50" />
+            ))}
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
 
-function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+function AppSidebar({ data, ...props }: AppSidebarProps){
   return (
     <Sidebar {...props}>
       <SidebarHeader className="h-16 border-b border-sidebar-border">
@@ -304,6 +308,7 @@ function NavUser({
 }
 
 export default function app() {
+
   return (
     <Layout>
       <Outlet />
