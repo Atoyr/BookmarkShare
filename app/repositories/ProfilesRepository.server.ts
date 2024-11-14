@@ -1,6 +1,6 @@
 // repositories/ProfilesRepository.ts
 import type { Profile, ProfileInput } from '~/models/Profile';
-import type { IProfilesRepository } from './IProfilesRepository';
+import type { IProfilesRepository } from './IProfilesRepository.server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 export class ProfilesRepository implements IProfilesRepository {
@@ -10,11 +10,11 @@ export class ProfilesRepository implements IProfilesRepository {
     this.supabase = supabaseClient;
   }
 
-  async getProfileById(id: string): Promise<Profile | null> {
+  async getProfileById(userId: string): Promise<Profile | null> {
     const { data, error } = await this.supabase
-      .from('Profiles')
-      .select('*')
-      .eq('id', id)
+      .from('profiles')
+      .select('username, email, user_id')
+      .eq('user_id', userId)
       .single();
 
     if (error) {
@@ -22,17 +22,17 @@ export class ProfilesRepository implements IProfilesRepository {
       return null;
     }
 
-    ///return data as Profile;
-    return null;
+    return data as Profile;
   }
 
   async createProfile(profile: ProfileInput): Promise<Profile> {
     const { data, error } = await this.supabase
-      .from('Profiles')
+      .from('profiles')
       .insert(profile)
       .single();
 
     if (error) {
+      console.error('プロフィールの作成エラー:', error);
       throw new Error(`プロフィールの作成エラー: ${error.message}`);
     }
 

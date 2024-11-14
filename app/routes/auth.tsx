@@ -6,10 +6,11 @@ import { AuthForm } from '../components/AuthForm';
 import type { OAuthData } from "~/utils/supabase/auth.types";
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-  const flow = formData.get("mode") as "signin" | "signup";
+  // const formData = await request.formData();
+  // const flow = formData.get("mode") as "signin" | "signup";
+  const flow = "signup";
 
-  const result = await signInWithGoogle(`http://localhost:5173/auth/callback?flow=${flow}`);
+  const result = await signInWithGoogle(request, `http://localhost:5173/auth/callback?flow=${flow}`);
 
   try {
     if (result.ok) {

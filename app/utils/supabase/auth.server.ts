@@ -4,9 +4,10 @@ import type { SignInResult } from "~/utils/supabase/auth.types";
 import { convertToOAuthData, convertToOptData } from "~/utils/supabase/auth.types";
 
 export const signInWithGoogle = async (
+  request: Request,
   redirectPath: string = "http://localhost:3000/auth/callback",
 ): Promise<SignInResult> => {
-  const supabase = createClient();
+  const supabase = createClient(request);
   const { data, error } = await supabase.client.auth.signInWithOAuth({
     provider: 'google',
     options: {

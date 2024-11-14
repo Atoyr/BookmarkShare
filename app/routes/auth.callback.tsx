@@ -1,6 +1,8 @@
 import { redirect, type LoaderFunctionArgs } from '@remix-run/node'
 
 import { createClient } from '~/utils/supabase/server';
+import { ProfilesRepository } from '~/repositories/ProfilesRepository.server';
+
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const requestUrl = new URL(request.url)
@@ -9,8 +11,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const flow = requestUrl.searchParams.get('flow');
 
   if (code) {
-    const { client,  headers}  = createClient(request);
-    const supabase = client;
+    const { client: supabase,  headers}  = createClient(request);
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
@@ -19,13 +20,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
       return redirect('/auth/auth-code-error', { headers });
     }
 
-    const session = await supabase.auth.getSession();
-    if (session.error || !session.data.session) {
+    const result = await supabase.auth.getSession();
+    if (result.error || !result.data.session) {
       // TODO: error Code
       return redirect('/auth/auth-code-error', { headers });
     }
-    const userId = session.data.session.user.id;
+    const userId = result.data.session.user.id;
 
+    const profilesRepo = new ProfilesRepository(supabase);
+    const profile = await profilesRepo.getProfileById(userId);
+
+    if (flow === 'signup' && !profile) {
+      const displayName = result.data.session.user.user_metadata?.full_name || result.data.session.user.user_metadata?.username || '匿名ユーザー';
+      const email = result.data.session.user.email;
+      profilesRepo.createProfile({username: displayName, email: email ?? "", user_id: userId});
+    } else if (flow === 'signin' && !profile) {
+      // TODO: error and redirect signin
+      return redirect('/auth?mode=signup', { headers });
+    }
+    return redirect(next, { headers });
   }
 
   const headers = new Headers()
@@ -36,5 +49,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 function signin() : {error: string} {
   return {error: "" };
 }
+
 function signup() {
 }
