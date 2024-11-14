@@ -14,12 +14,27 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
-    if (!error) {
-      return redirect(next, { headers })
+    if (error) {
+      // TODO: error Code
+      return redirect('/auth/auth-code-error', { headers });
     }
+
+    const session = await supabase.auth.getSession();
+    if (session.error || !session.data.session) {
+      // TODO: error Code
+      return redirect('/auth/auth-code-error', { headers });
+    }
+    const userId = session.data.session.user.id;
+
   }
 
   const headers = new Headers()
   // return the user to an error page with instructions
   return redirect('/auth/auth-code-error', { headers })
+}
+
+function signin() : {error: string} {
+  return {error: "" };
+}
+function signup() {
 }

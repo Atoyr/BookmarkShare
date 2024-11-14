@@ -1,13 +1,10 @@
 "use client"
 import {
-  Meta,
-  Links,
   Outlet,
   useLoaderData,
-  useLocation,
 } from "@remix-run/react";
 
-import { redirect, type LoaderFunction } from "@remix-run/node";
+import { redirect, type LoaderFunction, json } from "@remix-run/node";
 
 import * as React from "react"
 import {
@@ -68,6 +65,8 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar"
 
+import { useAuth } from '~/hooks/useAuth';
+
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   data : any, 
 }
@@ -77,6 +76,7 @@ export let loader: LoaderFunction = async ({request}) => {
   if (url.pathname === "/app") {
     return redirect("/app/dashboard");
   }
+
   const data = {
     user: {
       name: "shadcn loader",
@@ -97,7 +97,11 @@ export let loader: LoaderFunction = async ({request}) => {
       },
     ],
   }
-  return {data};
+  return json({
+    data, 
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+  });
 };
 
 // This is sample data.
@@ -308,6 +312,9 @@ function NavUser({
 }
 
 export default function app() {
+  const { SUPABASE_URL, SUPABASE_ANON_KEY } = useLoaderData<{SUPABASE_URL: string, SUPABASE_ANON_KEY: string}>();
+  const { signOut} = useAuth({url: SUPABASE_URL, key: SUPABASE_ANON_KEY});
+
 
   return (
     <Layout>

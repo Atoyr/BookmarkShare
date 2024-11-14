@@ -1,14 +1,20 @@
 import { ActionFunction, redirect, json} from "@remix-run/node";
+import { useSearchParams } from "@remix-run/react";
 
 import { signInWithGoogle } from "~/utils/supabase/auth.server";
 import { AuthForm } from '../components/AuthForm';
+import type { OAuthData } from "~/utils/supabase/auth.types";
 
 export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const flow = formData.get("mode") as "signin" | "signup";
+
+  const result = await signInWithGoogle(`http://localhost:5173/auth/callback?flow=${flow}`);
 
   try {
-    const result = await signInWithGoogle("http://localhost:5173/auth/callback?flow=signin");
     if (result.ok) {
-      return redirect(result.data.url || "",  { headers: result.headers }); // 成功時のリダイレクト先を指定
+      const url = (result!.data as OAuthData).url || "/";
+      return redirect(url, { headers: result.headers ?? undefined }); // 成功時のリダイレクト先を指定
     } else {
       return json({ error: result.error }, { status: 400 });
     }
@@ -18,6 +24,9 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function auth() {
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode") === "signup" ? "signup" : "signin";
+
   // TODO: モードに応じてsinguupとsigninを切り
   return (
     <>
@@ -41,23 +50,7 @@ export default function auth() {
           </div>
         </div>
         <div className="lg:p-8">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-            <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">
-                Create an account
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Enter your email below to create your account
-              </p>
-            </div>
-            <AuthForm />
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              By clicking continue, you agree to our{" "}
-                Terms of Service
-              and{" "}
-              .
-            </p>
-          </div>
+          <AuthForm mode={mode}/>
         </div>
       </div>
     </>
