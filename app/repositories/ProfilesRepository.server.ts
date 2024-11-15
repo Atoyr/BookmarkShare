@@ -13,7 +13,7 @@ export class ProfilesRepository implements IProfilesRepository {
   async getProfileById(userId: string): Promise<Profile | null> {
     const { data, error } = await this.supabase
       .from('profiles')
-      .select('username, email, user_id')
+      .select('id, username, email, user_id, avater_url')
       .eq('user_id', userId)
       .single();
 
