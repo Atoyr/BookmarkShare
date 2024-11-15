@@ -6,9 +6,8 @@ import { AuthForm } from '../components/AuthForm';
 import type { OAuthData } from "~/utils/supabase/auth.types";
 
 export const action: ActionFunction = async ({ request }) => {
-  // const formData = await request.formData();
-  // const flow = formData.get("mode") as "signin" | "signup";
-  const flow = "signup";
+  const formData = await request.formData();
+  const flow = formData.get("mode") as "signin" | "signup";
 
   const result = await signInWithGoogle(request, `http://localhost:5173/auth/callback?flow=${flow}`);
 
@@ -28,7 +27,7 @@ export default function auth() {
   const [searchParams] = useSearchParams();
   const mode = searchParams.get("mode") === "signup" ? "signup" : "signin";
 
-  // TODO: モードに応じてsinguupとsigninを切り
+  // TODO: 画面レイアウト
   return (
     <>
       <div className="md:hidden">
