@@ -4,7 +4,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 
-import { redirect, type LoaderFunction, json } from "@remix-run/node";
+import { redirect, type LoaderFunction, json ,type LoaderFunctionArgs } from "@remix-run/node";
 
 import * as React from "react"
 import {
@@ -66,21 +66,27 @@ import {
 } from "~/components/ui/sidebar"
 
 import { useAuth } from '~/hooks/useAuth';
+import { getUser } from '~/utils/supabase/auth.server';
+import { ProfilesRepositoryFactory } from '~/repositories/ProfilesRepositoryFactory.server';
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   data : any, 
 }
 
 export let loader: LoaderFunction = async ({request}) => {
-  const url = new URL(request.url);
-  if (url.pathname === "/app") {
-    return redirect("/app/dashboard");
+
+  const user = await getUser(request);
+  if (!user) {
+    return redirect("/auth");
   }
+
+  const profilesRepo = ProfilesRepositoryFactory.createProfileRepository(request);
+  const profile = await profilesRepo.getProfileById(user.id);
 
   const data = {
     user: {
-      name: "shadcn loader",
-      email: "m@example.com",
+      name: profile?.username ?? "Anonymous",
+      email: profile?.email ?? user.email,
     },
     calendars: [
       {
