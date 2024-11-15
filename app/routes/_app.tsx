@@ -87,6 +87,8 @@ export let loader: LoaderFunction = async ({request}) => {
     user: {
       name: profile?.username ?? "Anonymous",
       email: profile?.email ?? user.email,
+      avatar: profile?.avatar_url ?? "",
+      fallbackName : avatarFallbackString(profile?.username ?? "A"),
     },
     calendars: [
       {
@@ -109,6 +111,11 @@ export let loader: LoaderFunction = async ({request}) => {
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   });
 };
+
+function avatarFallbackString(name: string) {
+  const words = name.split(" ");
+  return words.slice(0, 2).map(str => str.charAt(0)).join('');
+}
 
 // This is sample data.
 
@@ -241,6 +248,7 @@ function NavUser({
     name: string
     email: string
     avatar: string
+    fallbackName: string
   }
 }) {
   const { isMobile } = useSidebar()
@@ -256,7 +264,7 @@ function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{user.fallbackName}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
@@ -275,7 +283,7 @@ function NavUser({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{user.fallbackName}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>
