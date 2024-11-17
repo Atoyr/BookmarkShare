@@ -30,8 +30,7 @@ export class SpaceRepository implements ISpaceRepository {
     const { data, error } = await this.supabase
       .from('spaces')
       .select('*')
-      .eq('id', id)
-      .select();
+      .eq('id', id);
 
     if (error) {
       console.error('スペースの取得エラー:', error);

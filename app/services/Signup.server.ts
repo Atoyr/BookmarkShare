@@ -1,6 +1,7 @@
 import { createClient } from '~/utils/supabase/server';
-import { ProfilesRepository } from '~/repositories/ProfilesRepository.server';
-import { SpaceRepository } from '~/repositories/SpaceRepository.server';
+import { ProfilesRepositoryFactory } from '~/repositories/ProfilesRepositoryFactory.server';
+import { SpaceRepositoryFactory } from '~/repositories/SpaceRepositoryFactory.server';
+import { BookmarkRepositoryFactory } from '~/repositories/BookmarkRepositoryFactory.server';
 import { SpaceRole } from '~/models/SpaceRole';
 
 export async function Signup(
@@ -9,12 +10,18 @@ export async function Signup(
   displayName: string,
   email: string | null = null
 ) {
-  const { client: supabase }  = createClient(request);
-  const profilesRepo = new ProfilesRepository(supabase);
+  // TODO: recovery
+
+  // ユーザーのプロフィールを作成
+  const profilesRepo = ProfilesRepositoryFactory.createProfileRepository(request);
   profilesRepo.createProfile({username: displayName, email: email ?? "", user_id: userId});
 
-  const spaceRepo = new SpaceRepository(supabase);
-
+  // プライベートスペースの作成
+  const spaceRepo = SpaceRepositoryFactory.createSpaceRepository(request);
   const space = await spaceRepo.createSpace({name: displayName, is_private: true});
   await spaceRepo.addMember({space_id: space.id, user_id: userId, role: SpaceRole.owner});
+
+  // デフォルトのブックマークグループを作成
+  const bookmarksRepo = BookmarkRepositoryFactory.createBookmarkRepository(request);
+  const bookmakGroup = await bookmarksRepo.createBookmarkGroup({space_id: space.id, name: 'デフォルトグループ'});
 }

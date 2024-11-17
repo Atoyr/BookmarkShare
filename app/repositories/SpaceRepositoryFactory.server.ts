@@ -4,7 +4,7 @@ import { SpaceRepository } from './SpaceRepository.server';
 
 export class SpaceRepositoryFactory {
   // ProfileRepository を生成するファクトリーメソッド
-  public static createProfileRepository(request: Request): ISpaceRepository {
+  public static createSpaceRepository(request: Request): ISpaceRepository {
 
     // TODO: mock
     
