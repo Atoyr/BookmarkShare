@@ -13,8 +13,9 @@ export class ProfilesRepository implements IProfilesRepository {
   async getProfileById(userId: string): Promise<Profile | null> {
     const { data, error } = await this.supabase
       .from('profiles')
-      .select('id, username, email, user_id, avatar_url')
+      .select('id, username, email, user_id, avatar_url, version')
       .eq('user_id', userId)
+      .limit(1)
       .single();
 
     if (error) {
@@ -28,15 +29,15 @@ export class ProfilesRepository implements IProfilesRepository {
   async createProfile(profile: ProfileInput): Promise<Profile> {
     const { data, error } = await this.supabase
       .from('profiles')
-      .insert(profile)
-      .single();
+      .upsert(profile)
+      .select();
 
     if (error) {
       console.error('プロフィールの作成エラー:', error);
       throw new Error(`プロフィールの作成エラー: ${error.message}`);
     }
 
-    return data as Profile;
+    return data[0] as Profile;
   }
 
   async updateProfile(id: string, profile: ProfileInput): Promise<Profile> {
