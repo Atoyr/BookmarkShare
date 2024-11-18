@@ -1,4 +1,3 @@
-
 export type Json =
   | string
   | number
@@ -37,26 +36,26 @@ export type Database = {
     Tables: {
       bookmark_gorup_definition_tags: {
         Row: {
-          bookmark_group_id: number
+          bookmark_group_id: string
           color: Database["public"]["Enums"]["color"]
           created_at: string
-          id: number
+          id: string
           name: string
           version: number
         }
         Insert: {
-          bookmark_group_id: number
+          bookmark_group_id?: string
           color: Database["public"]["Enums"]["color"]
           created_at?: string
-          id?: number
+          id?: string
           name: string
           version?: number
         }
         Update: {
-          bookmark_group_id?: number
+          bookmark_group_id?: string
           color?: Database["public"]["Enums"]["color"]
           created_at?: string
-          id?: number
+          id?: string
           name?: string
           version?: number
         }
@@ -65,68 +64,60 @@ export type Database = {
       bookmark_groups: {
         Row: {
           created_at: string
-          id: number
+          id: string
           name: string
-          space_id: number
+          space_id: string
           version: number
         }
         Insert: {
           created_at?: string
-          id?: number
-          name: string
-          space_id: number
+          id?: string
+          name?: string
+          space_id?: string
           version?: number
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           name?: string
-          space_id?: number
+          space_id?: string
           version?: number
         }
         Relationships: []
       }
       bookmark_tags: {
         Row: {
-          bookmark_group_id: number
-          bookmark_id: number
+          bookmark_group_id: string
+          bookmark_id: string
           created_at: string
-          id: number
-          tag_id: number
+          id: string
+          tag_id: string
           version: number
         }
         Insert: {
-          bookmark_group_id: number
-          bookmark_id: number
+          bookmark_group_id?: string
+          bookmark_id?: string
           created_at?: string
-          id?: number
-          tag_id: number
+          id?: string
+          tag_id?: string
           version?: number
         }
         Update: {
-          bookmark_group_id?: number
-          bookmark_id?: number
+          bookmark_group_id?: string
+          bookmark_id?: string
           created_at?: string
-          id?: number
-          tag_id?: number
+          id?: string
+          tag_id?: string
           version?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "bookmark_tags_tag_id_fkey"
-            columns: ["tag_id"]
-            isOneToOne: false
-            referencedRelation: "bookmark_gorup_definition_tags"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       bookmarks: {
         Row: {
-          bookmark_group_id: number
+          bookmark_group_id: string
           create_user_id: string
           created_at: string
-          id: number
+          id: string
           last_update_user_id: string
           modified_at: string
           title: string
@@ -134,10 +125,10 @@ export type Database = {
           version: number
         }
         Insert: {
-          bookmark_group_id: number
+          bookmark_group_id?: string
           create_user_id?: string
           created_at?: string
-          id?: number
+          id?: string
           last_update_user_id?: string
           modified_at?: string
           title?: string
@@ -145,39 +136,24 @@ export type Database = {
           version?: number
         }
         Update: {
-          bookmark_group_id?: number
+          bookmark_group_id?: string
           create_user_id?: string
           created_at?: string
-          id?: number
+          id?: string
           last_update_user_id?: string
           modified_at?: string
           title?: string
           url?: string
           version?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "bookmarks_bookmark_group_id_fkey"
-            columns: ["bookmark_group_id"]
-            isOneToOne: false
-            referencedRelation: "bookmark_groups"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookmarks_create_user_id_fkey"
-            columns: ["create_user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string
           email: string
-          id: number
+          id: string
           user_id: string
           username: string
           version: number
@@ -186,7 +162,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string
-          id?: number
+          id?: string
           user_id?: string
           username?: string
           version?: number
@@ -195,7 +171,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string
-          id?: number
+          id?: string
           user_id?: string
           username?: string
           version?: number
@@ -205,28 +181,25 @@ export type Database = {
       space_members: {
         Row: {
           created_at: string
-          id: number
+          id: string
           role: Database["public"]["Enums"]["space_role"]
-          space_id: number
-          uid: string
+          space_id: string
           user_id: string
           version: number
         }
         Insert: {
           created_at?: string
-          id?: number
+          id?: string
           role?: Database["public"]["Enums"]["space_role"]
-          space_id: number
-          uid?: string
+          space_id?: string
           user_id?: string
           version?: number
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           role?: Database["public"]["Enums"]["space_role"]
-          space_id?: number
-          uid?: string
+          space_id?: string
           user_id?: string
           version?: number
         }
@@ -235,26 +208,23 @@ export type Database = {
       spaces: {
         Row: {
           created_at: string
-          id: number
+          id: string
           is_private: boolean
           name: string
-          uid: string
           version: number
         }
         Insert: {
           created_at?: string
-          id?: number
+          id?: string
           is_private?: boolean
           name?: string
-          uid?: string
           version?: number
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           is_private?: boolean
           name?: string
-          uid?: string
           version?: number
         }
         Relationships: []
@@ -372,3 +342,4 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
