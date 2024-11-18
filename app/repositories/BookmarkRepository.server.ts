@@ -2,12 +2,12 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import type { IBookmarkRepository } from './IBookmarkRepository.server';
 import type { Bookmark, BookmarkInput } from '~/models/Bookmark';
 import type { BookmarkGroup, BookmarkGroupInput } from '~/models/BookmarkGroup';
+import type { Database } from '~/utils/supabase/schema';
 
+export class BookmarkRepository implements IBookmarkRepository {
+  private supabase: SupabaseClient<Database, "public", Database["public"]>
 
-export class BookmarkRepository implements IProfilesRepository {
-  private supabase: SupabaseClient;
-
-  constructor(supabaseClient: SupabaseClient) {
+  constructor(supabaseClient: SupabaseClient ) {
     this.supabase = supabaseClient;
   }
 
@@ -36,7 +36,7 @@ export class BookmarkRepository implements IProfilesRepository {
       return null;
     }
 
-    return data as BookmarkGroup;
+    return data[0] as BookmarkGroup;
   }
 
   async createBookmarkGroup(bookmarkGroup: BookmarkGroupInput): Promise<BookmarkGroup> {

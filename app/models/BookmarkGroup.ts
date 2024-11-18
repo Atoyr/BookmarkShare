@@ -6,6 +6,6 @@ export interface BookmarkGroupInput{
 }
 
 export interface BookmarkGroup extends BookmarkGroupInput, Model {
-  created_at: Date;
+  created_at: string;
 }
 
