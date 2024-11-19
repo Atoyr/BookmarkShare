@@ -17,6 +17,10 @@ case $1 in
     echo "Generating database diff..."
     dotenv -e $ENV_FILE -- supabase db diff --use-migra -f $2
     ;;
+  db-reset)
+    echo "Reset database..."
+    dotenv -e $ENV_FILE -- supabase db reset
+    ;;
   start)
     echo "Starting Supabase..."
     dotenv -e $ENV_FILE -- supabase start
@@ -24,6 +28,9 @@ case $1 in
   stop)
     echo "Starting Supabase..."
     dotenv -e $ENV_FILE -- supabase stop
+    ;;
+  status)
+    dotenv -e $ENV_FILE -- supabase status
     ;;
   *)
     echo "Usage: $0 {gen-types|db-diff|start}"
