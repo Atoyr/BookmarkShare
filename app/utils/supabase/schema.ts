@@ -72,7 +72,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          name?: string
+          name: string
           space_id?: string
           version?: number
         }
