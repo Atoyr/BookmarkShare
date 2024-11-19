@@ -5,10 +5,8 @@ import {
   Check,
   ChevronRight,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
   Plus,
-  Sparkles,
 } from "lucide-react"
 
 import {
@@ -16,13 +14,6 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "~/components/ui/avatar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "~/components/ui/breadcrumb"
-import { Calendar } from "~/components/ui/calendar"
 import {
   Collapsible,
   CollapsibleContent,
@@ -37,7 +28,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
-import { Separator } from "~/components/ui/separator"
 import {
   Sidebar,
   SidebarContent,
@@ -46,14 +36,11 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
   SidebarRail,
   SidebarSeparator,
-  SidebarTrigger,
   useSidebar,
 } from "~/components/ui/sidebar"
 
@@ -64,37 +51,45 @@ interface profile {
 }
 
 interface space {
-  bookmakrGroups : bookmakrGroup[], 
+  name: string, 
+  isPrivate: boolean, 
+  bookmarkGroups : bookmarkGroup[], 
 }
 
-interface bookmakrGroup {
-  id: number, 
+interface bookmarkGroup {
+  id: string, 
   name: string, 
 }
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   data : {
     profile: profile, 
+    spaces: space[], 
   }
+}
+
+function avatarFallbackString(name: string) {
+  const words = name.split(" ");
+  return words.slice(0, 2).map(str => str.charAt(0)).join('');
 }
 
 export function AppSidebar({ data, ...props }: AppSidebarProps){
   return (
     <Sidebar {...props}>
       <SidebarHeader className="h-16 border-b border-sidebar-border">
-        <NavUser user={data.profile} />
+        <NavUser profile={data.profile} />
       </SidebarHeader>
       {/* TODO: メニューの修正 */}
       <SidebarContent>
         <SidebarSeparator className="mx-0" />
-        <Calendars calendars={data.calendars} />
+        <Spaces spaces={data.spaces} />
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
               <Plus />
-              <span>New Calendar</span>
+              <span>New Spaces</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -105,18 +100,15 @@ export function AppSidebar({ data, ...props }: AppSidebarProps){
 }
 
 function Spaces({
-  calendars,
+  spaces,
 }: {
-  calendars: {
-    name: string
-    items: string[]
-  }[]
+  spaces: space[]
 }) {
   return (
     <>
-      {calendars.map((calendar, index) => (
-        <React.Fragment key={calendar.name}>
-          <SidebarGroup key={calendar.name} className="py-0">
+      {spaces.map((space, index) => (
+        <React.Fragment key={space.name}>
+          <SidebarGroup key={space.name} className="py-0">
             <Collapsible
               defaultOpen={index === 0}
               className="group/collapsible"
@@ -126,15 +118,15 @@ function Spaces({
                 className="group/label w-full text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
                 <CollapsibleTrigger>
-                  {calendar.name}{" "}
+                  {space.name}{" "}
                   <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {calendar.items.map((item, index) => (
-                      <SidebarMenuItem key={item}>
+                    {space.bookmarkGroups.map((bookmarkGroup, index) => (
+                      <SidebarMenuItem key={bookmarkGroup.id}>
                         <SidebarMenuButton>
                           <div
                             data-active={index < 2}
@@ -142,7 +134,7 @@ function Spaces({
                           >
                             <Check className="hidden size-3 group-data-[active=true]/calendar-item:block" />
                           </div>
-                          {item}
+                          {bookmarkGroup.name}
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
@@ -156,21 +148,6 @@ function Spaces({
       ))}
     </>
   )
-}
-
-function DatePicker() {
-  return (
-    <SidebarGroup className="px-0">
-      <SidebarGroupContent>
-        <Calendar className="[&_[role=gridcell].bg-accent]:bg-sidebar-primary [&_[role=gridcell].bg-accent]:text-sidebar-primary-foreground [&_[role=gridcell]]:w-[33px]" />
-      </SidebarGroupContent>
-    </SidebarGroup>
-  )
-}
-
-function avatarFallbackString(name: string) {
-  const words = name.split(" ");
-  return words.slice(0, 2).map(str => str.charAt(0)).join('');
 }
 
 function NavUser({
@@ -223,19 +200,8 @@ function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
                 <BadgeCheck />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
