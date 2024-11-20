@@ -1,9 +1,8 @@
 import { redirect, type LoaderFunctionArgs } from '@remix-run/node'
 
 import { createClient } from '~/utils/supabase/server';
-import { ProfilesRepository } from '~/repositories/ProfilesRepository.server';
-import { Signup } from '~/services/Signup.server';
-
+import { signup } from '~/services/Signup.server';
+import { getProfileByUserId } from '~/services/Profile.server';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const requestUrl = new URL(request.url)
@@ -28,13 +27,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
     const userId = result.data.session.user.id;
 
-    const profilesRepo = new ProfilesRepository(supabase);
-    const profile = await profilesRepo.getProfileById(userId);
+    const profile = await getProfileByUserId(request, userId);
 
     if (flow === 'signup' && !profile) {
       const displayName = result.data.session.user.user_metadata?.full_name || result.data.session.user.user_metadata?.username || '匿名ユーザー';
       const email = result.data.session.user.email;
-      Signup(request, userId, displayName, email);
+      signup(request, userId, displayName, email);
     } else if (flow === 'signin' && !profile) {
       // TODO: error and redirect signin
       return redirect('/auth?mode=signup', { headers });

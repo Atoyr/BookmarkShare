@@ -1,10 +1,9 @@
-import { createClient } from '~/utils/supabase/server';
 import { ProfilesRepositoryFactory } from '~/repositories/ProfilesRepositoryFactory.server';
 import { SpaceRepositoryFactory } from '~/repositories/SpaceRepositoryFactory.server';
 import { BookmarkRepositoryFactory } from '~/repositories/BookmarkRepositoryFactory.server';
 import { SpaceRole } from '~/models/SpaceRole';
 
-export async function Signup(
+export async function signup(
   request: Request, 
   userId: string,
   displayName: string,
