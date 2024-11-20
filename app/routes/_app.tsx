@@ -44,6 +44,7 @@ export let loader: LoaderFunction = async ({request}) => {
     },
     spaces: [
       {
+        id: "1",
         name: "プライベートスペース",
         isPrivate: true,
         bookmarkGroups: [

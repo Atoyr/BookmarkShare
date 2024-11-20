@@ -1,8 +1,12 @@
 import * as React from "react"
+
+import { Link } from "@remix-run/react";
+
 import {
   BadgeCheck,
+  BookMarked, 
   Bell,
-  Check,
+  Lock, 
   ChevronRight,
   ChevronsUpDown,
   LogOut,
@@ -51,6 +55,7 @@ interface profile {
 }
 
 interface space {
+  id: string, 
   name: string, 
   isPrivate: boolean, 
   bookmarkGroups : bookmarkGroup[], 
@@ -89,7 +94,7 @@ export function AppSidebar({ data, ...props }: AppSidebarProps){
           <SidebarMenuItem>
             <SidebarMenuButton>
               <Plus />
-              <span>New Spaces</span>
+              <span>新規スペースの作成</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -115,9 +120,11 @@ function Spaces({
             >
               <SidebarGroupLabel
                 asChild
+                data-private={space.isPrivate}
                 className="group/label w-full text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
-                <CollapsibleTrigger>
+                <CollapsibleTrigger >
+                  <Lock className="hidden group-data-[private=true]/label:block mr-1"/>
                   {space.name}{" "}
                   <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
@@ -125,16 +132,15 @@ function Spaces({
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {space.bookmarkGroups.map((bookmarkGroup, index) => (
+                    {space.bookmarkGroups.map((bookmarkGroup) => (
                       <SidebarMenuItem key={bookmarkGroup.id}>
-                        <SidebarMenuButton>
-                          <div
-                            data-active={index < 2}
-                            className="group/calendar-item flex aspect-square size-4 shrink-0 items-center justify-center rounded-sm border border-sidebar-border text-sidebar-primary-foreground data-[active=true]:border-sidebar-primary data-[active=true]:bg-sidebar-primary"
-                          >
-                            <Check className="hidden size-3 group-data-[active=true]/calendar-item:block" />
+                        <SidebarMenuButton className="flex items-center ">
+                          <Link to={`/spaces/${space.id}/bookmark-groups/${bookmarkGroup.id}`} className="flex flex-row gap-1 text-base flex-grow">
+                          <div className="ml-3 flex items-center justify-center">
+                            <BookMarked className="size-4" />
                           </div>
                           {bookmarkGroup.name}
+                          </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
