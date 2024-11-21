@@ -3,7 +3,7 @@ import { Model } from './Model';
 export interface BookmarkInput{
   title: string;
   url: string;
-  bookmark_group_id: number;
+  bookmark_group_id: string;
 }
 
 export interface Bookmark extends BookmarkInput, Model {

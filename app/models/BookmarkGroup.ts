@@ -1,7 +1,7 @@
 import { Model } from './Model';
 
 export interface BookmarkGroupInput{
-  space_id: number;
+  space_id: string;
   name: string;
 }
 

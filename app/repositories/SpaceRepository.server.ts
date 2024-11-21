@@ -1,12 +1,16 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import { ISpaceRepository } from './ISpaceRepository.server';
-import type { Space, SpaceInput } from '~/models/Space';
-import type { SpaceMember, SpaceMemberInput } from '~/models/SpaceMember';
+import type { 
+  BookmarkGroup,
+  Space, 
+  SpaceInput, 
+  SpaceMember, 
+  SpaceMemberInput } from '~/models';
+import type { Database } from '~/utils/supabase/schema';
 
 export class SpaceRepository implements ISpaceRepository {
-
-  private supabase: SupabaseClient;
+  private supabase: SupabaseClient<Database, "public", Database["public"]>
 
   constructor(supabaseClient: SupabaseClient) {
     this.supabase = supabaseClient;
@@ -79,5 +83,18 @@ export class SpaceRepository implements ISpaceRepository {
     }
 
     return data as SpaceMember[];
+  }
+
+  async getSpacesAndBookmarkGroups(): Promise<Space[] | null> {
+    const{ data, error } = await this.supabase
+    .from('spaces')
+    .select('id, name, is_private, created_at, version, bookmark_groups(*)')
+
+    if (error) {
+      console.error('プロフィールの取得エラー:', error);
+      return null;
+    }
+
+    return data as Space[];
   }
 }

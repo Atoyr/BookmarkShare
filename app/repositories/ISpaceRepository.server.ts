@@ -1,5 +1,9 @@
-import type { Space, SpaceInput } from '~/models/Space';
-import type { SpaceMember, SpaceMemberInput } from '~/models/SpaceMember';
+import type { 
+  BookmarkGroup,
+  Space, 
+  SpaceInput, 
+  SpaceMember, 
+  SpaceMemberInput } from '~/models';
 
 export interface ISpaceRepository {
   createSpace(space: SpaceInput): Promise<Space>;
@@ -7,5 +11,6 @@ export interface ISpaceRepository {
   getSpaces(): Promise<Space[] | null>;
   addMember(spaceMember: SpaceMemberInput): Promise<SpaceMember>;
   getSpaceMembers(spaceId: string): Promise<SpaceMember[] | null>;
+  getSpacesAndBookmarkGroups(): Promise<Space[] | null>;
 }
 

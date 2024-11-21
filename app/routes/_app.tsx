@@ -20,9 +20,10 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar"
 
+import { getProfileAndSpacesByUserId } from "~/services/Profile.server";
+
 import { useAuth } from '~/hooks/useAuth';
 import { getUser } from '~/utils/supabase/auth.server';
-import { ProfilesRepositoryFactory } from '~/repositories/ProfilesRepositoryFactory.server';
 import { AppSidebar } from '~/components/AppSidebar';
 
 export let loader: LoaderFunction = async ({request}) => {
@@ -33,8 +34,7 @@ export let loader: LoaderFunction = async ({request}) => {
   }
 
   // TODO: Serviceを使って取得する
-  const profilesRepo = ProfilesRepositoryFactory.createProfileRepository(request);
-  const profile = await profilesRepo.getProfileById(user.id);
+  const { profile, spaces } = await getProfileAndSpacesByUserId(request, user.id);
 
   const data = {
     profile: {
@@ -42,19 +42,17 @@ export let loader: LoaderFunction = async ({request}) => {
       email: profile?.email ?? user.email,
       avatar: profile?.avatar_url, 
     },
-    spaces: [
-      {
-        id: "1",
-        name: "プライベートスペース",
-        isPrivate: true,
-        bookmarkGroups: [
-          {id: "aaa", name: "Group A"},
-
-        ]
-      },
-    ],
+    spaces: spaces.map(x => { 
+      return {
+        id: x.id,
+        name: x.name,
+        isPrivate: x.is_private,
+        bookmarkGroups: x.bookmark_groups
+      }
+    })
   }
-  return json({
+
+  return ({
     data, 
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,

@@ -2,9 +2,10 @@
 import type { Profile, ProfileInput } from '~/models/Profile';
 import type { IProfilesRepository } from './IProfilesRepository.server';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '~/utils/supabase/schema';
 
 export class ProfilesRepository implements IProfilesRepository {
-  private supabase: SupabaseClient;
+  private supabase: SupabaseClient<Database, "public", Database["public"]>
 
   constructor(supabaseClient: SupabaseClient) {
     this.supabase = supabaseClient;
@@ -42,7 +43,7 @@ export class ProfilesRepository implements IProfilesRepository {
 
   async updateProfile(id: string, profile: ProfileInput): Promise<Profile> {
     const { data, error } = await this.supabase
-      .from('Profiles')
+      .from('profiles')
       .update(profile)
       .eq('id', id)
       .single();
@@ -56,7 +57,7 @@ export class ProfilesRepository implements IProfilesRepository {
 
   async deleteProfile(id: string): Promise<void> {
     const { error } = await this.supabase
-      .from('Profiles')
+      .from('profiles')
       .delete()
       .eq('id', id);
 

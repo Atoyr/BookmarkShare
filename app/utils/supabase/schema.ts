@@ -83,7 +83,15 @@ export type Database = {
           space_id?: string
           version?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_groups_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       bookmark_tags: {
         Row: {
@@ -146,7 +154,29 @@ export type Database = {
           url?: string
           version?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_bookmark_group_id_fkey"
+            columns: ["bookmark_group_id"]
+            isOneToOne: false
+            referencedRelation: "bookmark_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookmarks_create_user_id_fkey"
+            columns: ["create_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "bookmarks_last_update_user_id_fkey"
+            columns: ["last_update_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -203,7 +233,22 @@ export type Database = {
           user_id?: string
           version?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "space_members_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "space_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       spaces: {
         Row: {

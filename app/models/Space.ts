@@ -1,4 +1,5 @@
 import { Model } from './Model';
+import { BookmarkGroup } from './BookmarkGroup';
 
 export interface SpaceInput{
   name: string;
@@ -6,5 +7,6 @@ export interface SpaceInput{
 }
 
 export interface Space extends SpaceInput, Model {
-  created_at: Date;
+  created_at: string;
+  bookmark_groups?: BookmarkGroup[];
 }

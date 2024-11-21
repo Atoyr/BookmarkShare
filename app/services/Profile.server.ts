@@ -1,5 +1,6 @@
 import { ProfilesRepositoryFactory } from '~/repositories/ProfilesRepositoryFactory.server';
-import { Profile, Space, BookmarkGroup } from '~/models';
+import { SpaceRepositoryFactory } from '~/repositories/SpaceRepositoryFactory.server';
+import { Profile, Space } from '~/models';
 
 export async function getProfileByUserId(
   request: Request, 
@@ -12,7 +13,16 @@ export async function getProfileByUserId(
 export async function getProfileAndSpacesByUserId(
   request: Request, 
   userId: string,
-): Promise<{ profile: Profile, spaces: Space[], bookmarkGroups: BookmarkGroup[] } | null> {
+): Promise<{ profile: Profile | null, spaces: Space[] }> {
+  const profilesRepo = ProfilesRepositoryFactory.createProfileRepository(request);
+  const spacesRepo = SpaceRepositoryFactory.createSpaceRepository(request);
+  const profileProcess = profilesRepo.getProfileById(userId);
+  const spacesProcess = spacesRepo.getSpacesAndBookmarkGroups();
 
-  return null;
+  const profile = await profileProcess;
+  if (!profile) {
+    return { profile: null, spaces: [] };
+  }
+  const spaces = await spacesProcess;
+  return { profile, spaces: spaces ?? [] };
 }

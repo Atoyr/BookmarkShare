@@ -8,6 +8,6 @@ export interface ProfileInput{
 }
 
 export interface Profile extends ProfileInput, Model {
-  created_at: Date;
+  created_at: string;
 }
 
