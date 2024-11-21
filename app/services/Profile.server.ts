@@ -1,5 +1,5 @@
 import { ProfilesRepositoryFactory } from '~/repositories/ProfilesRepositoryFactory.server';
-import { Profile } from '~/models/Profile';
+import { Profile, Space, BookmarkGroup } from '~/models';
 
 export async function getProfileByUserId(
   request: Request, 
@@ -9,3 +9,10 @@ export async function getProfileByUserId(
   return await profilesRepo.getProfileById(userId);
 }
 
+export async function getProfileAndSpacesByUserId(
+  request: Request, 
+  userId: string,
+): Promise<{ profile: Profile, spaces: Space[], bookmarkGroups: BookmarkGroup[] } | null> {
+
+  return null;
+}
