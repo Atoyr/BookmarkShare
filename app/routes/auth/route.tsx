@@ -2,7 +2,7 @@ import { ActionFunction, redirect, json} from "@remix-run/node";
 import { useSearchParams } from "@remix-run/react";
 
 import { signInWithGoogle } from "~/utils/supabase/auth.server";
-import { AuthForm } from '../components/AuthForm';
+import { AuthForm } from '~/components/AuthForm';
 import type { OAuthData } from "~/utils/supabase/auth.types";
 
 export const action: ActionFunction = async ({ request }) => {

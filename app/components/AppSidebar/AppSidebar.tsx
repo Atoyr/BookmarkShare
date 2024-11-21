@@ -135,7 +135,7 @@ function Spaces({
                     {space.bookmarkGroups.map((bookmarkGroup) => (
                       <SidebarMenuItem key={bookmarkGroup.id}>
                         <SidebarMenuButton className="flex items-center ">
-                          <Link to={`/spaces/${space.id}/bookmark-groups/${bookmarkGroup.id}`} className="flex flex-row gap-1 text-base flex-grow">
+                          <Link to={`/s/${space.id}/bg/${bookmarkGroup.id}`} className="flex flex-row gap-1 text-base flex-grow">
                           <div className="ml-3 flex items-center justify-center">
                             <BookMarked className="size-4" />
                           </div>
