@@ -2,9 +2,11 @@
 import {
   Outlet,
   useLoaderData,
+  useLocation,
+  useMatches,
 } from "@remix-run/react";
 
-import { redirect, type LoaderFunction, json ,type LoaderFunctionArgs } from "@remix-run/node";
+import { redirect, type LoaderFunction } from "@remix-run/node";
 
 import * as React from "react"
 import {
@@ -20,11 +22,13 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar"
 
+
 import { getProfileAndSpacesByUserId } from "~/services/Profile.server";
 
 import { useAuth } from '~/hooks/useAuth';
 import { getUser } from '~/utils/supabase/auth.server';
-import { AppSidebar } from '~/components/AppSidebar';
+import { AppSidebar } from './AppSidebar';
+import { profile, space } from "./types";
 
 export let loader: LoaderFunction = async ({request}) => {
 
@@ -33,7 +37,6 @@ export let loader: LoaderFunction = async ({request}) => {
     return redirect("/auth");
   }
 
-  // TODO: Serviceを使って取得する
   const { profile, spaces } = await getProfileAndSpacesByUserId(request, user.id);
 
   const data = {
@@ -59,10 +62,19 @@ export let loader: LoaderFunction = async ({request}) => {
   });
 };
 
-// This is sample data.
+interface titleProps {
+  title: string | undefined;
+}
 
-export function Layout({ children }: { children: React.ReactNode }) {
-  const { data } = useLoaderData<{ data: any }>();
+
+function Layout({ children }: { children: React.ReactNode }) {
+  const { data } = useLoaderData<{ data: {profile: profile, spaces: space[]} }>();
+
+  // 子コンポーネントのLoaderの結果を取得する
+  const matches = useMatches();
+  const location = useLocation(); 
+  const currentMatch = matches.find((match) => match.pathname === location.pathname);
+  const childData = currentMatch?.data as titleProps;
 
   return (
     <SidebarProvider>
@@ -74,20 +86,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbPage>October 2024</BreadcrumbPage>
+                <BreadcrumbPage>{ childData?.title ?? data.profile.name}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
         {/* TODO: メインコンテンツ */}
         {children}
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-5">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div key={i} className="aspect-square rounded-xl bg-muted/50" />
-            ))}
-          </div>
-        </div>
       </SidebarInset>
     </SidebarProvider>
   );

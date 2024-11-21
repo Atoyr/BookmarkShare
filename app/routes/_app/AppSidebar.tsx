@@ -46,25 +46,9 @@ import {
   SidebarRail,
   SidebarSeparator,
   useSidebar,
-} from "~/components/ui/sidebar"
+} from "~/components/ui/sidebar";
 
-interface profile {
-  name: string | null, 
-  email: string | null, 
-  avatarUrl: string | null, 
-}
-
-interface space {
-  id: string, 
-  name: string, 
-  isPrivate: boolean, 
-  bookmarkGroups : bookmarkGroup[], 
-}
-
-interface bookmarkGroup {
-  id: string, 
-  name: string, 
-}
+import { profile, space } from "./types";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   data : {

@@ -1,6 +1,7 @@
 "use client"
 import type { MetaFunction } from "@remix-run/node";
 import { useParams } from "@remix-run/react";
+import { type LoaderFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
@@ -8,6 +9,10 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
+export let loader: LoaderFunction = async ({request}) => {
+  return { title: "bookmark" };
+}
+
 
 export default function dashboard() {
   const params = useParams();
