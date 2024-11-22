@@ -7,6 +7,10 @@ import { type LoaderFunction } from "@remix-run/node";
 import { getBookmarkGroupById, getBookmarksByBookmarkGroupId } from "~/services/Bookmark.server";
 import { Bookmark } from "~/models";
 
+
+import { DataTable } from "./DataTable";
+import { columns } from "./columns";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "bookmark" },
@@ -35,7 +39,10 @@ export default function dashboard() {
   const { title, bookmarks }= useLoaderData<{title: string, bookmarks: Bookmark[]}>();
 
   return (
-    <div>{title}</div>
+    <>
+      <div>{title}</div>
+      <DataTable columns={columns} data={bookmarks} />
+    </>
   );
 }
 
