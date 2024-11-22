@@ -21,6 +21,10 @@ case $1 in
     echo "Reset database..."
     dotenv -e $ENV_FILE -- supabase db reset
     ;;
+  db-dump)
+    echp "Dumping database..."
+    dotenv -e $ENV_FILE -- supabase db dump --local --data-only -f ./supabase/seed.sql
+    ;;
   start)
     echo "Starting Supabase..."
     dotenv -e $ENV_FILE -- supabase start
