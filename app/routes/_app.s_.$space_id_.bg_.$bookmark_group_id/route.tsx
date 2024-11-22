@@ -1,12 +1,9 @@
 "use client"
-import {
-  useLoaderData,
-} from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
-import { type LoaderFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { type MetaFunction, type LoaderFunction } from "@remix-run/node";
+
 import { getBookmarkGroupById, getBookmarksByBookmarkGroupId } from "~/services/Bookmark.server";
 import { Bookmark } from "~/models";
-
 
 import { DataTable } from "./DataTable";
 import { columns } from "./columns";
@@ -39,10 +36,9 @@ export default function dashboard() {
   const { title, bookmarks }= useLoaderData<{title: string, bookmarks: Bookmark[]}>();
 
   return (
-    <>
-      <div>{title}</div>
+    <div className="m-16 flex gap-2 flex-col">
       <DataTable columns={columns} data={bookmarks} />
-    </>
+    </div>
   );
 }
 
