@@ -86,7 +86,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbPage>{ childData?.title ?? data.profile.name}</BreadcrumbPage>
+                <BreadcrumbPage>{ childData?.title ?? ""}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

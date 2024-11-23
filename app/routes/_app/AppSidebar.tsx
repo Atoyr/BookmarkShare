@@ -6,10 +6,11 @@ import {
   BadgeCheck,
   BookMarked, 
   Bell,
-  Lock, 
   ChevronRight,
   ChevronsUpDown,
+  Lock, 
   LogOut,
+  House, 
   Plus,
 } from "lucide-react"
 
@@ -88,6 +89,35 @@ export function AppSidebar({ data, ...props }: AppSidebarProps){
   )
 }
 
+function Home() {
+  const key="__home__";
+  return(
+    <React.Fragment key={key}>
+      <SidebarGroup key={key} className="py-0">
+        <Collapsible
+          defaultOpen={true}
+          className="group/collapsible"
+        >
+          <SidebarGroupLabel
+            asChild
+            className="group/label w-full text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          >
+            <CollapsibleTrigger >
+              <Link to={'home'} className="flex flex-row gap-1 text-base flex-grow">
+                <div className="flex items-center justify-center">
+                  <House className="mr-1 size-4"/>
+                </div>
+                {"ホーム"}
+              </Link>
+            </CollapsibleTrigger>
+          </SidebarGroupLabel>
+        </Collapsible>
+      </SidebarGroup>
+      <SidebarSeparator className="mx-0" />
+    </React.Fragment>
+  );
+}
+
 function Spaces({
   spaces,
 }: {
@@ -95,6 +125,7 @@ function Spaces({
 }) {
   return (
     <>
+      <Home />
       {spaces.map((space, index) => (
         <React.Fragment key={space.name}>
           <SidebarGroup key={space.name} className="py-0">

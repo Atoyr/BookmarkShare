@@ -7,7 +7,7 @@ import { getProfileByUserId } from '~/services/Profile.server';
 export async function loader({ request }: LoaderFunctionArgs) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next') || '/dashboard';
+  const next = requestUrl.searchParams.get('next') || '/home';
   const flow = requestUrl.searchParams.get('flow');
 
   if (code) {
