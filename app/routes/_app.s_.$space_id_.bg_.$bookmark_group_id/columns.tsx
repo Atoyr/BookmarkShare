@@ -18,7 +18,7 @@ export const columns: ColumnDef<Bookmark>[] = [
       return (
         <div className="flex mx-2 my-2 items-center gap-2">
           <div className="flex-1 h-6">{title}</div>
-          <div className="flex-none hidden group-hover:inline-block"><Button className='h-6'>開く</Button></div>
+          <div className="flex-none hidden group-hover:inline-block"><Button className='h-6' variant="outline">開く</Button></div>
           <div className="flex-none hidden group-hover:inline-block"><a href={url}><SquareArrowOutUpRight className='size-4'/></a></div>
         </div>
       );

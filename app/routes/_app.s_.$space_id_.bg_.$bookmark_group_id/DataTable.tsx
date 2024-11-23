@@ -19,6 +19,7 @@ import {
 import { Button } from "~/components/ui/button"
 import { Input } from "~/components/ui/input"
 import { Plus } from "lucide-react"
+import { NewDialog } from "./NewDialog"
 
 
 interface DataTableProps<TData, TValue> {
@@ -49,7 +50,7 @@ export function DataTable<TData, TValue>({
             className="max-w-sm"
           />
         </div>
-        <div className="flex-none"><Button><Plus />追加</Button></div>
+        <div className="flex-none"><NewDialog /></div>
       </div>
       <div className="rounded-md border">
         <Table>
