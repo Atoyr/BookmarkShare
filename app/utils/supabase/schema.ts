@@ -128,6 +128,7 @@ export type Database = {
           id: string
           last_update_user_id: string
           modified_at: string
+          space_id: string
           title: string
           url: string
           version: number
@@ -139,6 +140,7 @@ export type Database = {
           id?: string
           last_update_user_id?: string
           modified_at?: string
+          space_id?: string
           title?: string
           url?: string
           version?: number
@@ -150,6 +152,7 @@ export type Database = {
           id?: string
           last_update_user_id?: string
           modified_at?: string
+          space_id?: string
           title?: string
           url?: string
           version?: number
@@ -175,6 +178,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "bookmarks_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
           },
         ]
       }

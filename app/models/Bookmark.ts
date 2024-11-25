@@ -4,6 +4,7 @@ export interface BookmarkInput{
   title: string;
   url: string;
   bookmark_group_id: string;
+  space_id: string;
 }
 
 export interface Bookmark extends BookmarkInput, Model {

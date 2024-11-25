@@ -25,11 +25,15 @@ import { NewDialog } from "./NewDialog"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  spaceId: string
+  bookmarkGroupId: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  spaceId, 
+  bookmarkGroupId
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -50,7 +54,7 @@ export function DataTable<TData, TValue>({
             className="max-w-sm"
           />
         </div>
-        <div className="flex-none"><NewDialog /></div>
+        <div className="flex-none"><NewDialog spaceId={spaceId} bookmarkGroupId={bookmarkGroupId}/></div>
       </div>
       <div className="rounded-md border">
         <Table>

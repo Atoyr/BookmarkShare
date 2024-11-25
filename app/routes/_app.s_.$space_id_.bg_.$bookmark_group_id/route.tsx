@@ -7,6 +7,7 @@ import { Bookmark } from "~/models";
 
 import { DataTable } from "./DataTable";
 import { columns } from "./columns";
+import { space } from "postcss/lib/list";
 
 export const meta: MetaFunction = () => {
   return [
@@ -28,16 +29,18 @@ export let loader: LoaderFunction = async ({request, params}) => {
   return { 
     title: bookmarkGroup?.name ?? "bookmark",
     bookmarks: bookmarks ?? [],
+    spaceId: spaceId,
+    bookmarkGroupId: bookmarkGroupId,
   };
 }
 
 
-export default function dashboard() {
-  const { title, bookmarks }= useLoaderData<{title: string, bookmarks: Bookmark[]}>();
+export default function bookmarks() {
+  const { title, bookmarks, spaceId, bookmarkGroupId }= useLoaderData<{title: string, bookmarks: Bookmark[], spaceId: string, bookmarkGroupId: string}>();
 
   return (
     <div className="m-16 flex gap-2 flex-col">
-      <DataTable columns={columns} data={bookmarks} />
+      <DataTable columns={columns} data={bookmarks} spaceId={spaceId} bookmarkGroupId={bookmarkGroupId}/>
     </div>
   );
 }

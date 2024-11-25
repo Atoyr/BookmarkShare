@@ -14,8 +14,9 @@ import {
 } from "~/components/ui/dialog"
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import type { BookmarkInput } from "~/models";
 
-export function NewDialog() {
+export function NewDialog({spaceId, bookmarkGroupId}: {spaceId: string, bookmarkGroupId: string}) {
   const [formData, setFormData] = useState({ url: "", title: "" });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,11 +24,17 @@ export function NewDialog() {
 
   // TODO: APIのコール先
   const handleSubmit = async () => {
+    const bookmark: BookmarkInput = {
+      url: formData.url,
+      title: formData.title,
+      space_id: spaceId,
+      bookmark_group_id: bookmarkGroupId,
+    }
     try {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(bookmark),
       });
       if (!response.ok) throw new Error("Failed to register");
       alert("Registration successful!");
@@ -35,6 +42,7 @@ export function NewDialog() {
       console.error(error);
       alert("An error occurred. Please try again.");
     }
+    setFormData({ url: "", title: "" });
   };
 
   return (
@@ -53,7 +61,7 @@ export function NewDialog() {
             </Label>
             <Input 
               id="link" 
-              name="name"
+              name="url"
               value={formData.url}
               onChange={handleChange} />
           </div>
