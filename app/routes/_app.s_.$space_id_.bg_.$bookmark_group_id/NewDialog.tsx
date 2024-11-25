@@ -75,7 +75,7 @@ export function NewDialog() {
                 className="flex-1" 
                 onClick={handleSubmit} 
                 type="button" >登録</Button>
-              <Button type="button" variant="secondary">キャンセル</Button>
+              <Button type="button" variant="outline">キャンセル</Button>
             </div>
           </DialogClose>
         </DialogFooter>
