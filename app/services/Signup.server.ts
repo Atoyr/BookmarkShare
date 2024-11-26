@@ -22,5 +22,5 @@ export async function signup(
 
   // デフォルトのブックマークグループを作成
   const bookmarksRepo = BookmarkRepositoryFactory.createBookmarkRepository(request);
-  const bookmakGroup = await bookmarksRepo.createBookmarkGroup({space_id: space.id, name: 'デフォルトグループ'});
+  await bookmarksRepo.createBookmarkGroup({space_id: space.id, name: 'デフォルトグループ'});
 }

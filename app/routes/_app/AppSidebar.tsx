@@ -8,10 +8,10 @@ import {
   Bell,
   ChevronRight,
   ChevronsUpDown,
-  Lock, 
   LogOut,
   House, 
   Plus,
+  MoreHorizontal,
 } from "lucide-react"
 
 import {
@@ -48,8 +48,9 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "~/components/ui/sidebar";
+import { Button } from "~/components/ui/button"
 
-import { profile, space } from "./types";
+import type { profile, space } from "./types";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   data : {
@@ -131,17 +132,28 @@ function Spaces({
           <SidebarGroup key={space.name} className="py-0">
             <Collapsible
               defaultOpen={index === 0}
-              className="group/collapsible"
-            >
+              className="group/collapsible" >
               <SidebarGroupLabel
                 asChild
-                data-private={space.isPrivate}
-                className="group/label w-full text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              >
+                className="group/label group w-full text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex gap-2" >
                 <CollapsibleTrigger >
-                  <Lock className="hidden group-data-[private=true]/label:block mr-1"/>
-                  {space.name}{" "}
-                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                  <ChevronRight className="transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                  <div className="flex-1 ">
+                    <p className="text-start">{space.isPrivate ? "プライベート" : space.name}</p>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <MoreHorizontal className="invisible group-hover/label:visible shrink-0" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                      <DropdownMenuItem>Billing</DropdownMenuItem>
+                      <DropdownMenuItem>Team</DropdownMenuItem>
+                      <DropdownMenuItem>Subscription</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
               <CollapsibleContent>
