@@ -22,7 +22,6 @@ export function NewDialog({spaceId, bookmarkGroupId}: {spaceId: string, bookmark
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // TODO: APIのコール先
   const handleSubmit = async () => {
     const bookmark: BookmarkInput = {
       url: formData.url,
@@ -31,8 +30,8 @@ export function NewDialog({spaceId, bookmarkGroupId}: {spaceId: string, bookmark
       bookmark_group_id: bookmarkGroupId,
     }
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
+      const response = await fetch("/api/bookmark", {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bookmark),
       });
