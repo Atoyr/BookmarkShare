@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Link } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 
 import {
   BadgeCheck,
@@ -124,6 +124,11 @@ function Spaces({
 }: {
   spaces: space[]
 }) {
+  const navigate = useNavigate();
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <>
       <Home />
@@ -142,16 +147,13 @@ function Spaces({
                     <p className="text-start">{space.isPrivate ? "プライベート" : space.name}</p>
                   </div>
                   <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <MoreHorizontal className="invisible group-hover/label:visible shrink-0" />
+                    <DropdownMenuTrigger asChild>
+                      <button className="invisible group-hover/label:visible shrink-0" >
+                        <MoreHorizontal />
+                      </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                      <DropdownMenuItem>Billing</DropdownMenuItem>
-                      <DropdownMenuItem>Team</DropdownMenuItem>
-                      <DropdownMenuItem>Subscription</DropdownMenuItem>
+                      <DropdownMenuItem asChild><Link to={`/s/${space.id}`}>設定</Link></DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </CollapsibleTrigger>

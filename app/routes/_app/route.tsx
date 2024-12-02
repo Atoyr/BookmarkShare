@@ -68,7 +68,7 @@ interface titleProps {
 
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const { data } = useLoaderData<{ data: {profile: profile, spaces: space[]} }>();
+  const { data } = useLoaderData<{ data: { profile: profile, spaces: space[]} }>();
 
   // 子コンポーネントのLoaderの結果を取得する
   const matches = useMatches();
